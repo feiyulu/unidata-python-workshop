@@ -1,6 +1,7 @@
 # Since we really don't want any of Travis' Python
 language: generic
-sudo: false
+sudo: required
+dist: xenial
 
 os:
   - linux
@@ -15,8 +16,9 @@ env:
   global:
     - MINICONDA_DIR="$HOME/miniconda"
   matrix:
-    - Python=3.5
-    - Python=3.6
+    - Python: 3.6
+    - Python: 3.7
+    - Python: 3.7 TASK="dev"
 
 before_install:
   # Taken from: http://conda.pydata.org/docs/travis.html
@@ -37,7 +39,13 @@ before_install:
 
 install:
   - conda env create -q -f environment.yml
-  - source activate unidata-workshop
+  - source activate unidata
+  - if [[ $TASK == "dev" ]]; then
+      conda uninstall metpy;
+      pip install git+git://github.com/unidata/metpy.git;
+      conda uninstall siphon;
+      pip install git+git://github.com/unidata/siphon.git;
+    fi;
   - python --version
   - conda list
 
@@ -51,5 +59,5 @@ before_script:
 script:
   - python notebooks_preprocess.py
   - python run_notebooks.py
-  - python notebooks/Command_Line_Tools/synopticplot.py  --gfslevel 850 --gfsfield Relative_humidity_isobaric --savefig --imgformat jpg
-  - python notebooks/Command_Line_Tools/skewt.py --date 20170420 --hour 0 --station BMX  --savefig  --imgformat jpg
+  #- python notebooks/Command_Line_Tools/synopticplot.py  --gfslevel 850 --gfsfield Relative_humidity_isobaric --savefig --imgformat jpg
+  #- python notebooks/Command_Line_Tools/skewt.py --date 20170420 --hour 0 --station BMX  --savefig  --imgformat jpg

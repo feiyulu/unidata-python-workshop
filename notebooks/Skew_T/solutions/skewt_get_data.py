@@ -1,7 +1,12 @@
-df = WyomingUpperAir.request_data(datetime(2017, 9, 10, 0), 'KEY')
+# Import the Wyoming simple web service upper air object
+from siphon.simplewebservice.wyoming import WyomingUpperAir
 
-p = df['pressure'].values * units(df.units['pressure'])
-T = df['temperature'].values * units(df.units['temperature'])
-Td = df['dewpoint'].values * units(df.units['dewpoint'])
-u = df['u_wind'].values * units(df.units['u_wind'])
-v = df['v_wind'].values * units(df.units['v_wind'])
+# Create the datetime and station variables you'll need
+request_time = datetime(2011, 4, 14, 18)
+station = 'OUN'
+
+# Make the request for the data
+df = WyomingUpperAir.request_data(request_time, station)
+
+# Attach units to the data
+sounding = pandas_dataframe_to_unit_arrays(df)

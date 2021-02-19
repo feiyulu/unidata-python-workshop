@@ -1,22 +1,23 @@
- name: unidata-workshop
+ name: unidata
  channels:
    - conda-forge
  dependencies:
-   - python=3
+   - python>=3.6
    - numpy
    - matplotlib
-   - cartopy
+   - cartopy>=0.17
    - jupyter
+   - jupyterlab
    - netcdf4
    - owslib
    - metpy
    - pint
-   - shapely<=1.5.17
+   - shapely
    - siphon
    - xarray
    - pip
    - ffmpeg
    - pytest
+   - mplcursors
    - pip:
      - python-awips
-     - mpldatacursor
